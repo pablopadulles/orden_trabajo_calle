@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="res.group" id="group_orden_trabajo_admin">
+            <field name="name">Orden Trabajo(Admin)</field>
+        </record>
+        <record model="res.user-res.group"
+            id="user_admin_orden_trabajo_group_admin">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_orden_trabajo_admin"/>
+        </record>        
+        
+        <record model="res.group" id="group_orden_trabajo">
+            <field name="name">Orden Trabajo</field>
+        </record>
+        <record model="res.user-res.group"
+            id="user_admin_orden_trabajo_group">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_orden_trabajo"/>
+        </record>
+
+        <!--     configuration -->
+
+        <record model="ir.ui.view" id="configuration_view_form">
+            <field name="model">orden.trabajo.configuration</field>
+            <field name="type">form</field>
+            <field name="name">configuration_form</field>
+        </record>
+        <record model="ir.action.act_window" id="act_configuration">
+            <field name="name">Ordenes Trabajo</field>
+            <field name="res_model">orden.trabajo.configuration</field>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_oci_configuration_view">
+            <field name="sequence" eval="1"/>
+            <field name="view" ref="configuration_view_form"/>
+            <field name="act_window" ref="act_configuration"/>
+        </record>
+
+        <menuitem action="act_configuration" id="menu_configuracion"
+            parent="oci.menu_config" sequence="20" icon="tryton-list"/>
+
+
+        <!-- reglas de acceso Materiales-->
+        <!--        acceso al los menus-->
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_group_admin"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo"/>
+            <field name="group" ref="group_orden_trabajo_admin"/>
+        </record>
+        <record model="ir.model.access" id="rule_group_orden_trabajo_admin">
+            <field name="model" search="[('model', '=', 'orden.trabajo')]"/>
+            <field name="group" ref="group_orden_trabajo_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_group"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo"/>
+            <field name="group" ref="group_orden_trabajo"/>
+        </record>
+        <record model="ir.model.access" id="rule_group_orden_trabajo">
+            <field name="model" search="[('model', '=', 'orden.trabajo')]"/>
+            <field name="group" ref="group_orden_trabajo"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+
+<!--    sequence -->
+        <record model="ir.sequence.type" id="sequence_type_ot_sequence">
+            <field name="name">OT Sequence</field>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_group_admin1">
+            <field name="sequence_type" ref="sequence_type_ot_sequence"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+
+        <record model="ir.sequence" id="sequence_orden_trabajo">
+            <field name="name">OT Sequence</field>
+            <field name="sequence_type" ref="sequence_type_ot_sequence"/>
+        </record>
+
+<!--    Botones -->
+        <record model="ir.model.button" id="open_button">
+            <field name="name">open</field>
+            <field name="string">Open OT</field>
+            <field name="model"
+                search="[('model', '=', 'orden.trabajo')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="open_button_group_orden_trabajo_admin">
+            <field name="button" ref="open_button"/>
+            <field name="group" ref="orden_trabajo.group_orden_trabajo_admin"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="open_button_group_orden_trabajo">
+            <field name="button" ref="open_button"/>
+            <field name="group" ref="orden_trabajo.group_orden_trabajo"/>
+        </record>
+
+        <record model="ir.model.button" id="done_button">
+            <field name="name">done</field>
+            <field name="string">Done OT</field>
+            <field name="model"
+                search="[('model', '=', 'orden.trabajo')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="done_button_group_orden_trabajo_admin">
+            <field name="button" ref="done_button"/>
+            <field name="group" ref="orden_trabajo.group_orden_trabajo_admin"/>
+        </record>
+        
+    </data>
+
+</tryton>

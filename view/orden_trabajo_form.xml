@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<form col="6">
+    <label name="date"/>
+    <field name="date" widget="date" xexpand="0" width="150"/>
+    <group col="4" colspan="2" id="ids" xexpand="1">
+        <label name="name"/>
+        <field name="name"/>
+        <label name="code"/>
+        <field name="code"/>
+    </group>
+
+    <group col="-1" colspan="2" id="checkboxes">
+        <label name="active"/>
+        <field name="active" xexpand="0" width="25"/>
+        <label name="aviso_señalamiento"/>
+        <field name="aviso_señalamiento" xexpand="0" width="25"/>
+        <!-- Add here some checkboxes ! -->
+    </group>
+
+    <newline/>
+    <notebook colspan="6">
+        <page string="General Information" id="general" col="6">
+            <group col="4" colspan="6" id="ubicacion">
+                <label name="street"/>
+                <field name="street"/>
+                <label name="city"/>
+                <field name="city"/>
+                <label name="central"/>
+                <field name="central"/>
+                <label name="armario"/>
+                <field name="armario"/>
+            </group>
+            <field name="observaciones"/>
+        </page>
+        <page string="Cuadrilla" id="tecnicos" col="2">
+            <label name="tecnico_sup"/>
+            <field name="tecnico_sup"/>
+            <field name="tecnicos" colspan="2"/>
+            <field name="materiales" colspan="2" view_ids="oci.oci_materiales_view_tree,oci.oci_materiales_view_form2"/>
+        </page>
+
+
+    </notebook>
+    <group col="4" colspan="6" id="botones">
+        <group col="2" colspan="1" id="state">
+            <label name="state"/>
+            <field name="state"/>
+        </group>
+        <group col="2" colspan="3" id="state">
+            <button name="done" string="Done" icon="tryton-ok"/>
+            <button name="open" string="Open" icon="tryton-ok"/>
+        </group>
+    </group>
+    <field name="products"/>
+</form>

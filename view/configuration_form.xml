@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<form>
+    <label name="sequence_ot"/>
+    <field name="sequence_ot"/>
+</form>

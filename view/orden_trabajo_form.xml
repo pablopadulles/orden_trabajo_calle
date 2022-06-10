@@ -48,7 +48,9 @@
         </group>
         <group col="2" colspan="3" id="state">
             <button name="done" string="Done" icon="tryton-ok"/>
+            <button name="validated" string="Validate" icon="tryton-ok"/>
             <button name="open" string="Open" icon="tryton-ok"/>
+            <button name="start" string="Start" icon="tryton-ok"/>
         </group>
     </group>
     <field name="products"/>

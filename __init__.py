@@ -9,6 +9,7 @@ from . import configuracion
 def register():
     Pool.register(orden_trabajo.OrdenTrabajo,
                 orden_trabajo.OrdenTrabajoParty,
+                orden_trabajo.Materiales,
                 configuracion.Configuration,
                 configuracion.ConfigurationOTSequence,
                   module='orden_trabajo',

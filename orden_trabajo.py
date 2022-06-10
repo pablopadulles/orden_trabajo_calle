@@ -9,7 +9,7 @@ from trytond.i18n import gettext
 from trytond.model import (ModelView, ModelSQL, MultiValueMixin, ValueMixin,
     DeactivableMixin, fields, Unique, sequence_ordered, Workflow, ModelSingleton)
 from trytond.wizard import Wizard, StateTransition, StateView, Button
-from trytond.pyson import Eval, Bool, Not, Or
+from trytond.pyson import Eval, Bool, Not, Or, If
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond import backend
@@ -48,12 +48,14 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     
     products = fields.Function(fields.Many2Many('product.product', None, None, 'Productos',
                 states={'invisible':True}), 'on_change_with_products')
-    materiales = fields.One2Many('oci.materiales', 'name', 'Materiales',
+    materiales = fields.One2Many('oci.materiales', 'name_ot', 'Materiales',
         states={'readonly': Or(Eval('state').in_(['done']), ~Bool(Eval('tecnico_sup')))})
 
     state = fields.Selection([
         ('draft', 'Draft'),
         ('open', 'Open'),
+        ('validated', 'Validated'),
+        ('start', 'Start'),
         ('done', 'Done')], 'State', readonly=True)
     
 
@@ -62,15 +64,23 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         super(OrdenTrabajo, cls).__setup__()
         cls._transitions |= set((
             ('draft', 'open'),
-            ('open', 'done'),
+            ('open', 'validated'),
+            ('validated', 'start'),
+            ('start', 'done'),
             ))
 
         cls._buttons.update({
             'open': {
-                'invisible': Eval('state').in_(['open', 'done'])
+                'invisible': Not(Eval('state').in_(['draft']))
+                },
+            'validated': {
+                'invisible': Not(Eval('state').in_(['open']))
+                },
+            'start': {
+                'invisible': Not(Eval('state').in_(['validated']))
                 },
             'done': {
-                'invisible': Eval('state').in_(['draft', 'done'])
+                'invisible': Not(Eval('state').in_(['start']))
                 },
             })
 
@@ -99,9 +109,27 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     
     @classmethod
     @ModelView.button
-    @Workflow.transition('done')
-    def done(cls, ot):
+    @Workflow.transition('validated')
+    def validated(cls, ots):
         pass
+
+    @classmethod
+    @ModelView.button
+    @Workflow.transition('start')
+    def start(cls, ots):
+        Date = Pool().get('ir.date')
+        for ot in ots:
+            ot.datetime_start = Date.now()
+            ot.save()
+
+    @classmethod
+    @ModelView.button
+    @Workflow.transition('done')
+    def done(cls, ots):
+        Date = Pool().get('ir.date')
+        for ot in ots:
+            ot.datetime_finish = Date.now()
+            ot.save()
 
     @fields.depends('tecnico_sup')
     def on_change_with_products(self, name=None):
@@ -125,6 +153,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         tecnico = Party(tecnico_id)
         if tecnico.deposito:
             stock = Product.products_by_location([tecnico.deposito.id])
+            print()
             for k in stock.keys():
                 if stock.get(k) > 0:
                     materiales.append(k[1])
@@ -156,3 +185,18 @@ class OrdenTrabajoParty(ModelSQL):
 
     orden_trabajo = fields.Many2One('orden.trabajo', 'Orden Trabajo')
     party = fields.Many2One('party.party', 'Party')
+
+
+class Materiales(metaclass=PoolMeta):
+    __name__ = 'oci.materiales'
+
+    name_ot = fields.Many2One('orden.trabajo', 'OT', ondelete='CASCADE')
+
+    @classmethod
+    def __setup__(cls):
+        super(Materiales, cls).__setup__()
+        cls.insumo.domain = [
+            If(Eval('_parent_name', False),
+                ('id', 'in', Eval('_parent_name', {}).get('products')),
+                ('id', 'in', Eval('_parent_name_ot', {}).get('products')))
+            ]

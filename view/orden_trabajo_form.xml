@@ -2,6 +2,8 @@
 <form col="6">
     <label name="date"/>
     <field name="date" widget="date" xexpand="0" width="150"/>
+    <label name="date_execution"/>
+    <field name="date_execution" widget="date" xexpand="0" width="150"/>
     <group col="4" colspan="2" id="ids" xexpand="1">
         <label name="name"/>
         <field name="name"/>

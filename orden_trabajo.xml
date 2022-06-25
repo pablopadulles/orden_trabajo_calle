@@ -19,6 +19,30 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">Ordenes de Trabajo</field>
             <field name="res_model">orden.trabajo</field>
         </record>
+        <record model="ir.action.act_window.domain"
+                id="act_orden_trabajo_domain_draft">
+            <field name="name">Draft</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain"
+                eval="[('state', '=', 'draft')]" pyson="1"/>
+            <field name="act_window" ref="act_orden_trabajo"/>
+        </record>
+        <record model="ir.action.act_window.domain"
+                id="act_orden_trabajo_domain_open">
+            <field name="name">Open</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain"
+                eval="[('state', '=', 'open')]" pyson="1"/>
+            <field name="act_window" ref="act_orden_trabajo"/>
+        </record>        
+        <record model="ir.action.act_window.domain"
+                id="act_orden_trabajo_domain_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain"
+                eval="[('state', 'in', ['validated', 'start', 'done'])]" pyson="1"/>
+            <field name="act_window" ref="act_orden_trabajo"/>
+        </record>
 
         <record model="ir.action.act_window.view" id="act_orden_trabajo_view">
             <field name="sequence" eval="10"/>

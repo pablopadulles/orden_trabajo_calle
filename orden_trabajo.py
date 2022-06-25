@@ -27,6 +27,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     code = fields.Char('Numero OT Automatico', states={"readonly":True})
     name = fields.Char('Numero OT')
     date = fields.Date('Fecha')
+    date_execution = fields.Date('Fecha de Ejecución')
     datetime_start = fields.DateTime('Fecha Inicio')
     datetime_finish = fields.DateTime('Fecha Fin')
     street = fields.Char("Street")
@@ -58,10 +59,12 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         ('start', 'Start'),
         ('done', 'Done')], 'State', readonly=True)
     
-
     @classmethod
     def __setup__(cls):
         super(OrdenTrabajo, cls).__setup__()
+        cls._order.insert(0, ('date_execution', 'ASC'))
+        cls._order.insert(1, ('code', 'ASC'))
+
         cls._transitions |= set((
             ('draft', 'open'),
             ('open', 'validated'),
@@ -129,6 +132,8 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         Date = Pool().get('ir.date')
         for ot in ots:
             ot.datetime_finish = Date.now()
+            Materiales = Pool().get('oci.materiales')
+            Materiales.done(ot.materiales)
             ot.save()
 
     @fields.depends('tecnico_sup')
@@ -200,3 +205,29 @@ class Materiales(metaclass=PoolMeta):
                 ('id', 'in', Eval('_parent_name', {}).get('products')),
                 ('id', 'in', Eval('_parent_name_ot', {}).get('products')))
             ]
+
+    @classmethod
+    @ModelView.button
+    @Workflow.transition('done')
+    def done(cls, materiales):
+        Move = Pool().get('stock.move')
+        Date = Pool().get('ir.date')
+        list = []
+        company = Transaction().context.get('company')
+        for material in materiales:
+            if material.state == 'done':
+                continue
+            list.append({
+            'product': material.insumo.id,
+            'uom': material.insumo.template.default_uom.id,
+            'quantity': material.cantidad,
+            'from_location': material.name.tecnico.deposito.id if material.name else material.name_ot.tecnico_sup.deposito.id,
+            'to_location': 7, #Cliente
+            'effective_date': Date.today(),
+            'company': company,
+            'unit_price': material.insumo.template.list_price,
+            })
+
+        moves = Move.create(list)
+        Move.do(moves)
+        pass

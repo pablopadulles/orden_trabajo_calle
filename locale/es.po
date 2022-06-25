@@ -1,0 +1,231 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+#, fuzzy
+msgctxt "field:oci.materiales,name_ot:"
+msgid "OT"
+msgstr "OT"
+
+msgctxt "field:orden.trabajo,active:"
+msgid "Activo"
+msgstr ""
+
+msgctxt "field:orden.trabajo,armario:"
+msgid "Armario"
+msgstr ""
+
+msgctxt "field:orden.trabajo,aviso_señalamiento:"
+msgid "Aviso de Señalamiento"
+msgstr ""
+
+msgctxt "field:orden.trabajo,central:"
+msgid "Zona"
+msgstr ""
+
+msgctxt "field:orden.trabajo,city:"
+msgid "City"
+msgstr "Ciudad"
+
+msgctxt "field:orden.trabajo,code:"
+msgid "Numero OT Automatico"
+msgstr ""
+
+msgctxt "field:orden.trabajo,date:"
+msgid "Fecha"
+msgstr ""
+
+msgctxt "field:orden.trabajo,date_execution:"
+msgid "Fecha de Ejecución"
+msgstr ""
+
+msgctxt "field:orden.trabajo,datetime_finish:"
+msgid "Fecha Fin"
+msgstr ""
+
+msgctxt "field:orden.trabajo,datetime_start:"
+msgid "Fecha Inicio"
+msgstr ""
+
+msgctxt "field:orden.trabajo,materiales:"
+msgid "Materiales"
+msgstr ""
+
+msgctxt "field:orden.trabajo,name:"
+msgid "Numero OT"
+msgstr ""
+
+msgctxt "field:orden.trabajo,observaciones:"
+msgid "Observaciones"
+msgstr ""
+
+msgctxt "field:orden.trabajo,products:"
+msgid "Productos"
+msgstr ""
+
+msgctxt "field:orden.trabajo,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:orden.trabajo,street:"
+msgid "Street"
+msgstr "Direccion"
+
+msgctxt "field:orden.trabajo,tecnico_sup:"
+msgid "Tecnico Supervisor"
+msgstr ""
+
+msgctxt "field:orden.trabajo,tecnicos:"
+msgid "Tecnicos"
+msgstr ""
+
+msgctxt "field:orden.trabajo-party.party,orden_trabajo:"
+msgid "Orden Trabajo"
+msgstr ""
+
+#, fuzzy
+msgctxt "field:orden.trabajo-party.party,party:"
+msgid "Party"
+msgstr "Terceros"
+
+msgctxt "field:orden.trabajo.configuration,sequence_ot:"
+msgid "Numero OT"
+msgstr ""
+
+msgctxt "field:orden.trabajo.configuration.sequence_ot,sequence_ot:"
+msgid "Numero OT"
+msgstr ""
+
+msgctxt "model:ir.action,name:act_configuration"
+msgid "Ordenes Trabajo"
+msgstr "Siniestros y Postaciones"
+
+msgctxt "model:ir.action,name:act_orden_trabajo"
+msgid "Ordenes de Trabajo"
+msgstr "Siniestros y Postaciones"
+
+msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_all"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_draft"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_draft"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_open"
+msgid "Open"
+msgstr "Abierto"
+
+msgctxt "model:ir.model.button,string:done_button"
+msgid "Done OT"
+msgstr ""
+
+msgctxt "model:ir.model.button,string:open_button"
+msgid "Open OT"
+msgstr ""
+
+msgctxt "model:ir.model.button,string:start_button"
+msgid "Start Work"
+msgstr ""
+
+msgctxt "model:ir.model.button,string:validated_button"
+msgid "Validate OT"
+msgstr ""
+
+msgctxt "model:ir.sequence,name:sequence_orden_trabajo"
+msgid "OT Sequence"
+msgstr ""
+
+msgctxt "model:ir.sequence.type,name:sequence_type_ot_sequence"
+msgid "OT Sequence"
+msgstr ""
+
+msgctxt "model:ir.ui.menu,name:menu_configuracion"
+msgid "Ordenes Trabajo"
+msgstr "Siniestros y Postaciones"
+
+msgctxt "model:ir.ui.menu,name:menu_orden_trabajo"
+msgid "Ordenes de Trabajo"
+msgstr "Siniestros y Postaciones"
+
+msgctxt "model:orden.trabajo,name:"
+msgid "Orden de Trabajo"
+msgstr "Siniestros y Postaciones"
+
+msgctxt "model:orden.trabajo-party.party,name:"
+msgid "Orden Trabajo - Party"
+msgstr ""
+
+#, fuzzy
+msgctxt "model:orden.trabajo.configuration,name:"
+msgid "Configuration"
+msgstr "Configuración"
+
+msgctxt "model:orden.trabajo.configuration.sequence_ot,name:"
+msgid "Configuration Sequence OT"
+msgstr ""
+
+msgctxt "model:res.group,name:group_orden_trabajo"
+msgid "Orden Trabajo"
+msgstr ""
+
+msgctxt "model:res.group,name:group_orden_trabajo_admin"
+msgid "Orden Trabajo(Admin)"
+msgstr ""
+
+msgctxt "selection:orden.trabajo,state:"
+msgid "Done"
+msgstr "Terminado"
+
+msgctxt "selection:orden.trabajo,state:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "selection:orden.trabajo,state:"
+msgid "Draft"
+msgstr "Borrador"
+
+msgctxt "selection:orden.trabajo,state:"
+msgid "Open"
+msgstr "Abierto"
+
+msgctxt "selection:orden.trabajo,state:"
+msgid "Start"
+msgstr "Inicio"
+
+#, fuzzy
+msgctxt "selection:orden.trabajo,state:"
+msgid "Validated"
+msgstr "Validada"
+
+msgctxt "view:orden.trabajo:"
+msgid "Cuadrilla"
+msgstr ""
+
+#, fuzzy
+msgctxt "view:orden.trabajo:"
+msgid "Done"
+msgstr "Terminado"
+
+msgctxt "view:orden.trabajo:"
+msgid "General Information"
+msgstr ""
+
+#, fuzzy
+msgctxt "view:orden.trabajo:"
+msgid "Open"
+msgstr "Pendiente"
+
+#, fuzzy
+msgctxt "view:orden.trabajo:"
+msgid "Start"
+msgstr "Inicio"
+
+#, fuzzy
+msgctxt "view:orden.trabajo:"
+msgid "Validate"
+msgstr "Validar"

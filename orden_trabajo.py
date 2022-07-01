@@ -114,7 +114,11 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     @ModelView.button
     @Workflow.transition('validated')
     def validated(cls, ots):
-        pass
+        for ot in ots:
+            if not ot.tecnico_sup:
+                raise ValueError('Falta el tecnico supervisor')
+            if not ot.date_execution:
+                raise ValueError('Falta la Fecha de Ejecución')
 
     @classmethod
     @ModelView.button

@@ -6,6 +6,7 @@ this repository contains the full copyright notices and license terms. -->
     <field name="code" expand="1"/>
     <field name="street"/>
     <field name="city"/>
-    <field name="observaciones"/>
-    <field name="state" tree_invisible="1"/>
+    <field name="prioriry"/>
+    <field name="state"/>
+    <field name="type" tree_invisible="1"/>
 </tree>

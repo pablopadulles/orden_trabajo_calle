@@ -5,7 +5,7 @@ this repository contains the full copyright notices and license terms. -->
     <data>
 
 
-        <!--     configuration -->
+<!--     configuration -->
 
         <record model="ir.ui.view" id="configuration_view_form">
             <field name="model">orden.trabajo.configuration</field>
@@ -25,6 +25,11 @@ this repository contains the full copyright notices and license terms. -->
 
         <menuitem action="act_configuration" id="menu_configuracion"
             parent="oci.menu_config" sequence="20" icon="tryton-list"/>
+
+        <!-- <record model="ir.ui.icon" id="prioriry_green_icon">
+            <field name="name">prioriry-green</field>
+            <field name="path">icons/prioriry_green.svg</field>
+        </record> -->
 
 <!--    sequence -->
         <record model="ir.sequence.type" id="sequence_type_ot_sequence">
@@ -77,8 +82,12 @@ this repository contains the full copyright notices and license terms. -->
             <field name="group" ref="group_orden_trabajo_admin"/>
         </record>
         
-        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_group_admin"> 
-            <field name="menu" ref="orden_trabajo.menu_orden_trabajo"/>
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_siniestro_group_admin"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo_siniestro"/>
+            <field name="group" ref="group_orden_trabajo_admin"/>
+        </record>
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_postacion_group_admin"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo_postacion"/>
             <field name="group" ref="group_orden_trabajo_admin"/>
         </record>
         <record model="ir.ui.menu-res.group" id="menu_orden_trabajo0_group_admin"> 
@@ -151,8 +160,12 @@ this repository contains the full copyright notices and license terms. -->
             <field name="group" ref="group_orden_trabajo"/>
         </record> -->
 
-        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_group"> 
-            <field name="menu" ref="orden_trabajo.menu_orden_trabajo"/>
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_siniestro_group"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo_siniestro"/>
+            <field name="group" ref="group_orden_trabajo"/>
+        </record>
+        <record model="ir.ui.menu-res.group" id="menu_orden_trabajo_postacion_group"> 
+            <field name="menu" ref="orden_trabajo.menu_orden_trabajo_postacion"/>
             <field name="group" ref="group_orden_trabajo"/>
         </record>
         <record model="ir.ui.menu-res.group" id="menu_orden_trabajo0_group"> 

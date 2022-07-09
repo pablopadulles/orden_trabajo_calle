@@ -24,12 +24,14 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     'Orden de Trabajo'
     __name__ = 'orden.trabajo'
 
+    type = fields.Selection([('postacion', 'Postacion'),('siniestro', 'Siniestro')], 'Tipo',
+        states={'invisible':True})
     code = fields.Char('Numero OT Automatico', states={"readonly":True})
     name = fields.Char('Numero OT')
     date = fields.Date('Fecha')
     date_execution = fields.Date('Fecha de Ejecución')
-    datetime_start = fields.DateTime('Fecha Inicio')
-    datetime_finish = fields.DateTime('Fecha Fin')
+    datetime_start = fields.Timestamp('Fecha Inicio', states={"readonly":True})
+    datetime_finish = fields.Timestamp('Fecha Fin', states={"readonly":True})
     street = fields.Char("Street")
     aviso_señalamiento = fields.Boolean("Aviso de Señalamiento")
     active = fields.Boolean("Activo")
@@ -51,6 +53,12 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
                 states={'invisible':True}), 'on_change_with_products')
     materiales = fields.One2Many('oci.materiales', 'name_ot', 'Materiales',
         states={'readonly': Or(Eval('state').in_(['done']), ~Bool(Eval('tecnico_sup')))})
+
+    prioriry = fields.Selection([
+        ('1', 'Low'),
+        ('2', 'Medium'),
+        ('3', 'High'),
+        ('4', 'Urgent')], 'Priority', required=True, sort=False)
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -87,10 +95,29 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
                 },
             })
 
+    @classmethod
+    def view_attributes(cls):
+        return super().view_attributes() + [
+            ('/tree', 'visual',
+                If(
+                    Eval('prioriry') == '1', 'muted',
+                    If(
+                        Eval('prioriry') == '2', 'success', 
+                        If(
+                            Eval('prioriry') == '3', 'warning', 
+                            If(
+                                Eval('prioriry') == '4', 'danger', ''))
+                    ),
+                )
+            )]
 
     @staticmethod
     def default_state():
         return 'draft'
+
+    @staticmethod
+    def default_prioriry():
+        return '1'
 
     @staticmethod
     def default_active():
@@ -126,7 +153,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     def start(cls, ots):
         Date = Pool().get('ir.date')
         for ot in ots:
-            ot.datetime_start = Date.now()
+            ot.datetime_start = datetime.now()
             ot.save()
 
     @classmethod
@@ -135,7 +162,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     def done(cls, ots):
         Date = Pool().get('ir.date')
         for ot in ots:
-            ot.datetime_finish = Date.now()
+            ot.datetime_finish = datetime.now()
             Materiales = Pool().get('oci.materiales')
             Materiales.done(ot.materiales)
             ot.save()
@@ -162,7 +189,6 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         tecnico = Party(tecnico_id)
         if tecnico.deposito:
             stock = Product.products_by_location([tecnico.deposito.id])
-            print()
             for k in stock.keys():
                 if stock.get(k) > 0:
                     materiales.append(k[1])
@@ -235,3 +261,11 @@ class Materiales(metaclass=PoolMeta):
         moves = Move.create(list)
         Move.do(moves)
         pass
+
+
+# class Prioriry(ModelSQL, ModelView):
+#     "Proiridades"
+#     __name__ = 'orden.trabajo.priority'
+
+#     name = fields.Char("Priority", required=True)
+#     icon = fields.Many2One('ir.ui.icon', 'Icon')

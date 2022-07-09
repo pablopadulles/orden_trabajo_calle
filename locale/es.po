@@ -23,6 +23,7 @@ msgctxt "field:orden.trabajo,central:"
 msgid "Zona"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:orden.trabajo,city:"
 msgid "City"
 msgstr "Ciudad"
@@ -59,17 +60,24 @@ msgctxt "field:orden.trabajo,observaciones:"
 msgid "Observaciones"
 msgstr ""
 
+#, fuzzy
+msgctxt "field:orden.trabajo,prioriry:"
+msgid "Priority"
+msgstr "Prioridad"
+
 msgctxt "field:orden.trabajo,products:"
 msgid "Productos"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:orden.trabajo,state:"
 msgid "State"
 msgstr "Estado"
 
+#, fuzzy
 msgctxt "field:orden.trabajo,street:"
 msgid "Street"
-msgstr "Direccion"
+msgstr "Calle"
 
 msgctxt "field:orden.trabajo,tecnico_sup:"
 msgid "Tecnico Supervisor"
@@ -77,6 +85,10 @@ msgstr ""
 
 msgctxt "field:orden.trabajo,tecnicos:"
 msgid "Tecnicos"
+msgstr ""
+
+msgctxt "field:orden.trabajo,type:"
+msgid "Tipo"
 msgstr ""
 
 msgctxt "field:orden.trabajo-party.party,orden_trabajo:"
@@ -98,27 +110,51 @@ msgstr ""
 
 msgctxt "model:ir.action,name:act_configuration"
 msgid "Ordenes Trabajo"
-msgstr "Siniestros y Postaciones"
+msgstr ""
 
-msgctxt "model:ir.action,name:act_orden_trabajo"
-msgid "Ordenes de Trabajo"
-msgstr "Siniestros y Postaciones"
+msgctxt "model:ir.action,name:act_orden_trabajo_postacion"
+msgid "Ordenes de Postaciones"
+msgstr ""
 
-msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_all"
+msgctxt "model:ir.action,name:act_orden_trabajo_siniestro"
+msgid "Ordenes de Siniestros"
+msgstr ""
+
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_postacion_domain_all"
 msgid "All"
 msgstr "Todo"
 
-msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_draft"
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_postacion_domain_draft"
 msgid "Draft"
 msgstr "Borrador"
 
-msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_draft"
-msgid "Draft"
-msgstr "Borrador"
-
-msgctxt "model:ir.action.act_window.domain,name:act_orden_trabajo_domain_open"
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_postacion_domain_open"
 msgid "Open"
-msgstr "Abierto"
+msgstr "Pendiente"
+
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_siniestro_domain_all"
+msgid "All"
+msgstr "Todo"
+
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_siniestro_domain_draft"
+msgid "Draft"
+msgstr "Borrador"
+
+#, fuzzy
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_orden_trabajo_siniestro_domain_open"
+msgid "Open"
+msgstr "Pendiente"
 
 msgctxt "model:ir.model.button,string:done_button"
 msgid "Done OT"
@@ -146,15 +182,19 @@ msgstr ""
 
 msgctxt "model:ir.ui.menu,name:menu_configuracion"
 msgid "Ordenes Trabajo"
-msgstr "Siniestros y Postaciones"
+msgstr ""
 
-msgctxt "model:ir.ui.menu,name:menu_orden_trabajo"
-msgid "Ordenes de Trabajo"
-msgstr "Siniestros y Postaciones"
+msgctxt "model:ir.ui.menu,name:menu_orden_trabajo_postacion"
+msgid "Ordenes de Postaciones"
+msgstr ""
+
+msgctxt "model:ir.ui.menu,name:menu_orden_trabajo_siniestro"
+msgid "Ordenes de Siniestros"
+msgstr ""
 
 msgctxt "model:orden.trabajo,name:"
 msgid "Orden de Trabajo"
-msgstr "Siniestros y Postaciones"
+msgstr ""
 
 msgctxt "model:orden.trabajo-party.party,name:"
 msgid "Orden Trabajo - Party"
@@ -177,55 +217,50 @@ msgctxt "model:res.group,name:group_orden_trabajo_admin"
 msgid "Orden Trabajo(Admin)"
 msgstr ""
 
+msgctxt "selection:orden.trabajo,prioriry:"
+msgid "High"
+msgstr ""
+
+msgctxt "selection:orden.trabajo,prioriry:"
+msgid "Low"
+msgstr ""
+
+msgctxt "selection:orden.trabajo,prioriry:"
+msgid "Medium"
+msgstr ""
+
+msgctxt "selection:orden.trabajo,prioriry:"
+msgid "Urgent"
+msgstr ""
+
+#, fuzzy
 msgctxt "selection:orden.trabajo,state:"
 msgid "Done"
-msgstr "Terminado"
+msgstr "Finalizar"
 
+#, fuzzy
 msgctxt "selection:orden.trabajo,state:"
 msgid "Draft"
 msgstr "Borrador"
 
-msgctxt "selection:orden.trabajo,state:"
-msgid "Draft"
-msgstr "Borrador"
-
+#, fuzzy
 msgctxt "selection:orden.trabajo,state:"
 msgid "Open"
-msgstr "Abierto"
+msgstr "Pendiente"
 
 msgctxt "selection:orden.trabajo,state:"
 msgid "Start"
-msgstr "Inicio"
+msgstr ""
 
 #, fuzzy
 msgctxt "selection:orden.trabajo,state:"
 msgid "Validated"
 msgstr "Validada"
 
-msgctxt "view:orden.trabajo:"
-msgid "Cuadrilla"
+msgctxt "selection:orden.trabajo,type:"
+msgid "Postacion"
 msgstr ""
 
-#, fuzzy
-msgctxt "view:orden.trabajo:"
-msgid "Done"
-msgstr "Terminado"
-
-msgctxt "view:orden.trabajo:"
-msgid "General Information"
+msgctxt "selection:orden.trabajo,type:"
+msgid "Siniestro"
 msgstr ""
-
-#, fuzzy
-msgctxt "view:orden.trabajo:"
-msgid "Open"
-msgstr "Pendiente"
-
-#, fuzzy
-msgctxt "view:orden.trabajo:"
-msgid "Start"
-msgstr "Inicio"
-
-#, fuzzy
-msgctxt "view:orden.trabajo:"
-msgid "Validate"
-msgstr "Validar"

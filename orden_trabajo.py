@@ -1,4 +1,5 @@
 from dataclasses import field
+from re import template
 from stdnum import get_cc_module
 import stdnum.exceptions
 import logging
@@ -27,7 +28,8 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     type = fields.Selection([('postacion', 'Postacion'),('siniestro', 'Siniestro')], 'Tipo',
         states={'invisible':True})
     code = fields.Char('Numero OT Automatico', states={"readonly":True})
-    name = fields.Char('Numero OT')
+    name = fields.Char('EHS', states={"required":True})
+    io = fields.Char('IO', states={"required":True})
     date = fields.Date('Fecha')
     date_execution = fields.Date('Fecha de Ejecución')
     datetime_start = fields.Timestamp('Fecha Inicio', states={"readonly":True})
@@ -38,6 +40,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     city = fields.Char("City")
     central = fields.Many2One('oci.central.telecom', 'Zona',
                       states={'readonly':Eval('state').in_(['done'])})
+    shipment_out = fields.Many2One('stock.shipment.out', 'Remito Materiales', states={"readonly":True})
     armario = fields.Many2One('oci.armario', 'Armario', domain=[
             ('central', '=', Eval('central')),
         ], states={'readonly':Eval('state').in_(['done'])})
@@ -51,8 +54,8 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     
     products = fields.Function(fields.Many2Many('product.product', None, None, 'Productos',
                 states={'invisible':True}), 'on_change_with_products')
-    materiales = fields.One2Many('oci.materiales', 'name_ot', 'Materiales',
-        states={'readonly': Or(Eval('state').in_(['done']), ~Bool(Eval('tecnico_sup')))})
+    materiales = fields.One2Many('orden.trabajo.materiales', 'name', 'Materiales',
+        states={'readonly': Eval('state').in_(['validated', 'start', 'done'])})
 
     prioriry = fields.Selection([
         ('1', 'Low'),
@@ -142,10 +145,33 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     @Workflow.transition('validated')
     def validated(cls, ots):
         for ot in ots:
+            moves = []
             if not ot.tecnico_sup:
                 raise ValueError('Falta el tecnico supervisor')
             if not ot.date_execution:
                 raise ValueError('Falta la Fecha de Ejecución')
+            Remito = Pool().get('stock.shipment.out')
+            delivery_address = ot.tecnico_sup.address_get(type='delivery')
+            remito, = Remito.create([{
+                'customer':ot.tecnico_sup,
+                'reference':ot.code,
+                'delivery_address': delivery_address.id,
+                # 'moves':[('create', moves)]
+            }])
+            for material in ot.materiales:
+                moves.append({
+                    'product': material.insumo.id,
+                    'uom': material.insumo.template.default_uom.id,
+                    'quantity': float(material.cantidad),
+                    'unit_price': 0.0,
+                    'from_location':remito.warehouse_output,
+                    'to_location':remito.customer_location
+                })
+            remito.moves = moves
+            remito.save()
+            Remito.wait([remito])
+            ot.shipment_out = remito
+            ot.save()
 
     @classmethod
     @ModelView.button
@@ -222,50 +248,51 @@ class OrdenTrabajoParty(ModelSQL):
     party = fields.Many2One('party.party', 'Party')
 
 
-class Materiales(metaclass=PoolMeta):
-    __name__ = 'oci.materiales'
+# class Materiales(metaclass=PoolMeta):
+#     __name__ = 'oci.materiales'
 
-    name_ot = fields.Many2One('orden.trabajo', 'OT', ondelete='CASCADE')
+#     name_ot = fields.Many2One('orden.trabajo', 'OT', ondelete='CASCADE')
 
-    @classmethod
-    def __setup__(cls):
-        super(Materiales, cls).__setup__()
-        cls.insumo.domain = [
-            If(Eval('_parent_name', False),
-                ('id', 'in', Eval('_parent_name', {}).get('products')),
-                ('id', 'in', Eval('_parent_name_ot', {}).get('products')))
-            ]
+#     @classmethod
+#     def __setup__(cls):
+#         super(Materiales, cls).__setup__()
+#         cls.insumo.domain = [
+#             If(Eval('_parent_name', False),
+#                 ('id', 'in', Eval('_parent_name', {}).get('products')),
+#                 ('id', 'in', Eval('_parent_name_ot', {}).get('products')))
+#             ]
 
-    @classmethod
-    @ModelView.button
-    @Workflow.transition('done')
-    def done(cls, materiales):
-        Move = Pool().get('stock.move')
-        Date = Pool().get('ir.date')
-        list = []
-        company = Transaction().context.get('company')
-        for material in materiales:
-            if material.state == 'done':
-                continue
-            list.append({
-            'product': material.insumo.id,
-            'uom': material.insumo.template.default_uom.id,
-            'quantity': material.cantidad,
-            'from_location': material.name.tecnico.deposito.id if material.name else material.name_ot.tecnico_sup.deposito.id,
-            'to_location': 7, #Cliente
-            'effective_date': Date.today(),
-            'company': company,
-            'unit_price': material.insumo.template.list_price,
-            })
+#     @classmethod
+#     @ModelView.button
+#     @Workflow.transition('done')
+#     def done(cls, materiales):
+#         Move = Pool().get('stock.move')
+#         Date = Pool().get('ir.date')
+#         list = []
+#         company = Transaction().context.get('company')
+#         for material in materiales:
+#             if material.state == 'done':
+#                 continue
+#             list.append({
+#             'product': material.insumo.id,
+#             'uom': material.insumo.template.default_uom.id,
+#             'quantity': material.cantidad,
+#             'from_location': material.name.tecnico.deposito.id if material.name else material.name_ot.tecnico_sup.deposito.id,
+#             'to_location': 7, #Cliente
+#             'effective_date': Date.today(),
+#             'company': company,
+#             'unit_price': material.insumo.template.list_price,
+#             })
 
-        moves = Move.create(list)
-        Move.do(moves)
-        pass
+#         moves = Move.create(list)
+#         Move.do(moves)
+#         pass
 
 
-# class Prioriry(ModelSQL, ModelView):
-#     "Proiridades"
-#     __name__ = 'orden.trabajo.priority'
+class Materiales(ModelSQL, ModelView):
+    "Materiales para a orden de trabajo"
+    __name__ = 'orden.trabajo.materiales'
 
-#     name = fields.Char("Priority", required=True)
-#     icon = fields.Many2One('ir.ui.icon', 'Icon')
+    name = fields.Many2One('orden.trabajo', 'OT', ondelete='CASCADE')
+    insumo = fields.Many2One('product.product', 'Insumo', required=True)
+    cantidad = fields.Integer('Cantidad', required=True)

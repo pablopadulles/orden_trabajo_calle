@@ -4,6 +4,13 @@ this repository contains the full copyright notices and license terms. -->
 <tryton>
     <data>
 
+        <!-- orden.trabajo.materiales viwes -->
+        <record model="ir.ui.view" id="materiales_view_tree">
+            <field name="model">orden.trabajo.materiales</field>
+            <field name="type">tree</field>
+            <field name="name">ot_materiales_tree</field>
+        </record>
+
         <!-- orden.trabajo viwes -->
         <record model="ir.ui.view" id="orden_trabajo_view_tree">
             <field name="model">orden.trabajo</field>

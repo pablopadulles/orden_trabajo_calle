@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <form col="6">
-    <label name="date"/>
-    <field name="date" widget="date" xexpand="0" width="150"/>
-    <label name="date_execution"/>
-    <field name="date_execution" widget="date" xexpand="0" width="150"/>
-    <label name="datetime_start"/>
-    <field name="datetime_start"/>
-    <group col="4" colspan="2" id="ids" xexpand="1">
+    <group col="8" colspan="6" id="dates" xexpand="1">
+        <label name="date"/>
+        <field name="date" widget="date" xexpand="0" width="150"/>
+        <label name="date_execution"/>
+        <field name="date_execution" widget="date" xexpand="0" width="150"/>
+        <label name="datetime_start"/>
+        <field name="datetime_start"/>
+        <label name="datetime_finish"/>
+        <field name="datetime_finish"/>
+    </group>
+    <group col="6" colspan="2" id="ids" xexpand="1">
         <label name="name"/>
         <field name="name"/>
+        <label name="io"/>
+        <field name="io"/>
         <label name="code"/>
         <field name="code"/>
     </group>
@@ -20,7 +26,6 @@
         <field name="aviso_señalamiento" xexpand="0" width="25"/>
         <!-- Add here some checkboxes ! -->
     </group>
-
     <newline/>
     <notebook colspan="6">
         <page string="General Information" id="general" col="6">
@@ -38,14 +43,16 @@
             </group>
             <field name="observaciones"/>
         </page>
-        <page string="Cuadrilla" id="tecnicos" col="2">
+        <page string="Materiales" id="materiales" col="4">
+            <label name="shipment_out"/>
+            <field name="shipment_out"/>
+            <field name="materiales" colspan="4" mode="tree"/>
+        </page>
+        <page string="Cuadrilla" id="tecnicos" col="4">
             <label name="tecnico_sup"/>
             <field name="tecnico_sup"/>
-            <field name="tecnicos" colspan="2"/>
-            <field name="materiales" colspan="2" view_ids="oci.oci_materiales_view_tree,oci.oci_materiales_view_form2"/>
+            <field name="tecnicos" colspan="4"/>
         </page>
-
-
     </notebook>
     <group col="4" colspan="6" id="botones">
         <group col="2" colspan="1" id="state">

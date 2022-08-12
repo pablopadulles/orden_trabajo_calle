@@ -27,6 +27,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="type">form</field>
             <field name="name">orden_trabajo_materiales_form</field>
         </record>
+        
         <record model="ir.ui.view" id="create_stock_shipment_out_start_form">
             <field name="model">orden.trabajo.create_stock_shipment_out.start</field>
             <field name="type">form</field>

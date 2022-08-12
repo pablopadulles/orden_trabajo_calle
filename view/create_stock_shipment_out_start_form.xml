@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<form>
+    <field name="materiales" model="tree" view_ids="orden_trabajo.materiales_view_tree2"/>/>
+</form>

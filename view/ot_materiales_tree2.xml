@@ -2,9 +2,6 @@
 <!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
 this repository contains the full copyright notices and license terms. -->
 <tree editable="1">
-    <field name="name"/>
     <field name="insumo"/>
     <field name="cantidad"/>
-    <field name="usado"/>
-    <field name="diferencia"/>
 </tree>

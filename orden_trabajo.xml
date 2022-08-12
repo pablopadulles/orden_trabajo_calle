@@ -5,10 +5,32 @@ this repository contains the full copyright notices and license terms. -->
     <data>
 
         <!-- orden.trabajo.materiales viwes -->
+        <record model="ir.ui.view" id="workers_view_tree">
+            <field name="model">orden.trabajo.workers</field>
+            <field name="type">tree</field>
+            <field name="name">workers_tree</field>
+        </record>
+
         <record model="ir.ui.view" id="materiales_view_tree">
             <field name="model">orden.trabajo.materiales</field>
             <field name="type">tree</field>
             <field name="name">ot_materiales_tree</field>
+        </record>
+        <record model="ir.ui.view" id="materiales_view_tree2">
+            <field name="model">orden.trabajo.materiales</field>
+            <field name="type">tree</field>
+            <field name="name">ot_materiales_tree2</field>
+        </record>
+
+        <record model="ir.ui.view" id="materiales_view_form">
+            <field name="model">orden.trabajo.materiales</field>
+            <field name="type">form</field>
+            <field name="name">orden_trabajo_materiales_form</field>
+        </record>
+        <record model="ir.ui.view" id="create_stock_shipment_out_start_form">
+            <field name="model">orden.trabajo.create_stock_shipment_out.start</field>
+            <field name="type">form</field>
+            <field name="name">create_stock_shipment_out_start_form</field>
         </record>
 
         <!-- orden.trabajo viwes -->
@@ -21,6 +43,18 @@ this repository contains the full copyright notices and license terms. -->
             <field name="model">orden.trabajo</field>
             <field name="type">form</field>
             <field name="name">orden_trabajo_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="orden_trabajo_postacion_view_form">
+            <field name="model">orden.trabajo</field>
+            <field name="type">form</field>
+            <field name="name">orden_trabajo_postacion_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="orden_trabajo_siniestro_view_form">
+            <field name="model">orden.trabajo</field>
+            <field name="type">form</field>
+            <field name="name">orden_trabajo_siniestro_form</field>
         </record>
 
         <!-- orden.trabajo accions siniestro -->
@@ -65,7 +99,7 @@ this repository contains the full copyright notices and license terms. -->
         </record>
         <record model="ir.action.act_window.view" id="act_orden_trabajo_siniestro_view_form">
             <field name="sequence" eval="20"/>
-            <field name="view" ref="orden_trabajo_view_form"/>
+            <field name="view" ref="orden_trabajo_siniestro_view_form"/>
             <field name="act_window" ref="act_orden_trabajo_siniestro"/>
         </record>
 
@@ -114,12 +148,19 @@ this repository contains the full copyright notices and license terms. -->
         </record>
         <record model="ir.action.act_window.view" id="act_orden_trabajo_postacion_view_form">
             <field name="sequence" eval="20"/>
-            <field name="view" ref="orden_trabajo_view_form"/>
+            <field name="view" ref="orden_trabajo_postacion_view_form"/>
             <field name="act_window" ref="act_orden_trabajo_postacion"/>
         </record>
 
         <menuitem sequence="20" id="menu_orden_trabajo_postacion" action="act_orden_trabajo_postacion"
             parent="oci.menu_orden_trabajo0"/>
+
+
+<!--     -->
+        <record model="ir.action.wizard" id="wiz_orden_trabajo_agregar_materiales">
+            <field name="name">Agregar Materiales</field>
+            <field name="wiz_name">orden.trabajo.create_stock_shipment_out</field>
+        </record>
 
 
     </data>

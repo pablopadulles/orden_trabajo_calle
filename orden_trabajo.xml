@@ -27,7 +27,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="type">form</field>
             <field name="name">orden_trabajo_materiales_form</field>
         </record>
-        
+
         <record model="ir.ui.view" id="create_stock_shipment_out_start_form">
             <field name="model">orden.trabajo.create_stock_shipment_out.start</field>
             <field name="type">form</field>
@@ -35,11 +35,17 @@ this repository contains the full copyright notices and license terms. -->
         </record>
 
         <!-- orden.trabajo viwes -->
+        <record model="ir.ui.view" id="orden_trabajo_siniestro_view_tree">
+            <field name="model">orden.trabajo</field>
+            <field name="type">tree</field>
+            <field name="name">orden_trabajo_siniestro_tree</field>
+        </record>
         <record model="ir.ui.view" id="orden_trabajo_view_tree">
             <field name="model">orden.trabajo</field>
             <field name="type">tree</field>
             <field name="name">orden_trabajo_tree</field>
         </record>
+
         <record model="ir.ui.view" id="orden_trabajo_view_form">
             <field name="model">orden.trabajo</field>
             <field name="type">form</field>
@@ -95,7 +101,7 @@ this repository contains the full copyright notices and license terms. -->
 
         <record model="ir.action.act_window.view" id="act_orden_trabajo_siniestro_view">
             <field name="sequence" eval="10"/>
-            <field name="view" ref="orden_trabajo_view_tree"/>
+            <field name="view" ref="orden_trabajo_siniestro_view_tree"/>
             <field name="act_window" ref="act_orden_trabajo_siniestro"/>
         </record>
         <record model="ir.action.act_window.view" id="act_orden_trabajo_siniestro_view_form">
@@ -138,7 +144,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">All</field>
             <field name="sequence" eval="10"/>
             <field name="domain"
-                eval="[('state', 'in', ['validated', 'start', 'done'])]" pyson="1"/>
+                eval="[('state', 'in', ['validated', 'start', 'done', 'stop'])]" pyson="1"/>
             <field name="act_window" ref="act_orden_trabajo_postacion"/>
         </record>
 

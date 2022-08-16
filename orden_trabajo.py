@@ -1,3 +1,4 @@
+import typing
 from dataclasses import field
 from re import template
 from stdnum import get_cc_module
@@ -37,7 +38,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     datetime_finish = fields.Timestamp('Fecha Fin', states={"readonly":True})
     street = fields.Char("Street")
     # aviso_señalamiento = fields.Boolean("Aviso de Señalamiento")
-    aviso_señalamiento = fields.Integer("AS", states={'required':Equal(Eval('type'), 'postacion')})
+    aviso_señalamiento = fields.Integer("AS", states={'required':Equal(Eval('type'), 'siniestro')})
     numero_ot = fields.Integer("OT", states={'required':Equal(Eval('type'), 'postacion')})
     active = fields.Boolean("Activo")
     city = fields.Char("City")
@@ -95,8 +96,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
 
         cls._buttons.update({
             'agregar_materiales': {
-                'invisible': Not(Eval('state').in_(['validated'])),
-                'readonly': Eval('state').in_(['done'])
+                'invisible': Not(Eval('state').in_(['stop']))
                 },
             'open': {
                 'invisible': Not(Eval('state').in_(['draft']))
@@ -182,7 +182,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
 
     @classmethod
     @ModelView.button
-    @Workflow.transition('resume')
+    @Workflow.transition('start')
     def resume(cls, ots):
         OTW = Pool().get('orden.trabajo.workers')
         now = datetime.now()
@@ -291,14 +291,17 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
                 # 'moves':[('create', moves)]
             }])
             for material in self.materiales:
-                moves.append({
-                    'product': material.insumo.id,
-                    'uom': material.insumo.template.default_uom.id,
-                    'quantity': float(material.cantidad),
-                    'unit_price': 0.0,
-                    'from_location':remito.warehouse_output,
-                    'to_location':remito.customer_location
-                })
+                if not material.remito:
+                    moves.append({
+                        'product': material.insumo.id,
+                        'uom': material.insumo.template.default_uom.id,
+                        'quantity': float(material.cantidad),
+                        'unit_price': 0.0,
+                        'from_location':remito.warehouse_output,
+                        'to_location':remito.customer_location
+                    })
+                    material.remito = remito
+                    material.save()
             remito.moves = moves
             remito.save()
             Remito.wait([remito])
@@ -344,6 +347,7 @@ class Materiales(ModelSQL, ModelView):
 
     name = fields.Many2One('orden.trabajo', 'OT', ondelete='CASCADE')
     insumo = fields.Many2One('product.product', 'Insumo', required=True)
+    remito = fields.Many2One('stock.shipment.out', 'Remito', states={'readonly':True})
     cantidad = fields.Integer('Cantidad', required=True)
     usado = fields.Integer('Usado', states={'readonly':True})
     diferencia = fields.Function(fields.Integer('Diferencia'), 'get_diferencia')
@@ -377,8 +381,11 @@ class CreateStockShipmentOut(Wizard):
     def transition_create_(self):
         ot_id = Transaction().context['active_id']
         orden_trabajo = Pool().get('orden.trabajo')(ot_id)
+        materiales = []
+        for material in self.start.materiales:
+            material.name = orden_trabajo
+            material.save()
         if orden_trabajo.crear_remito():
-            orden_trabajo
             return 'end'
 
 

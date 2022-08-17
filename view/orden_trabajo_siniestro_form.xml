@@ -15,8 +15,8 @@
         <field name="name"/>
         <label name="oi"/>
         <field name="oi" xexpand="1"/>
-        <label name="code"/>
-        <field name="code" xexpand="1"/>
+        <label name="aviso_señalamiento"/>
+        <field name="aviso_señalamiento" xexpand="1"/>
     </group>
 
     <group col="-1" colspan="2" id="checkboxes">
@@ -42,14 +42,17 @@
             <field name="observaciones"/>
         </page>
         <page string="Materiales" id="materiales" col="4">
-            <button name="agregar_materiales" string="Agregar Materiales" icon="tryton-ok"/>
             <field name="shipments_out" colspan="4" />
-            <!-- <field name="materiales" colspan="4" mode="tree"/> -->
+            <button name="agregar_materiales" string="Agregar Materiales" icon="tryton-add"/>
+            <field name="materiales" colspan="4" mode="tree"/>
         </page>
         <page string="Cuadrilla" id="tecnicos" col="4">
             <label name="tecnico_sup"/>
             <field name="tecnico_sup"/>
             <field name="tecnicos" colspan="4"/>
+        </page>
+        <page string="Trabajadores" id="trabajadores" col="4">
+            <field name="workers" colspan="4" mode="tree"/>
         </page>
     </notebook>
     <group col="4" colspan="6" id="botones">
@@ -58,10 +61,12 @@
             <field name="state"/>
         </group>
         <group col="2" colspan="3" id="state">
-            <button name="done" string="Done" icon="tryton-ok"/>
+            <button name="done" string="Done" icon="tryton-ok"/>    
             <button name="validated" string="Validate" icon="tryton-ok"/>
             <button name="open" string="Open" icon="tryton-ok"/>
             <button name="start" string="Start" icon="tryton-ok"/>
+            <button name="stop" string="Stop" icon="tryton-cancel"/>
+            <button name="resume" string="Resume" icon="tryton-forward"/>
         </group>
     </group>
     <field name="type"/>

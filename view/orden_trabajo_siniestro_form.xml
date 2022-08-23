@@ -16,7 +16,7 @@
         <label name="oi"/>
         <field name="oi" xexpand="1"/>
         <label name="aviso_señalamiento"/>
-        <field name="aviso_señalamiento" xexpand="1"/>
+        <field name="aviso_señalamiento"/>
     </group>
 
     <group col="-1" colspan="2" id="checkboxes">

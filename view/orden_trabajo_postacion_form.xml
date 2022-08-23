@@ -10,11 +10,11 @@
         <label name="datetime_finish"/>
         <field name="datetime_finish"/>
     </group>
-    <group col="6" colspan="4" id="ids">
+    <group col="4" colspan="4" id="ids">
         <label name="pedido_por"/>
-        <field name="pedido_por"/>
+        <field name="pedido_por" xexpand="1"/>
         <label name="numero_ot"/>
-        <field name="numero_ot"/>
+        <field name="numero_ot" widget="char"/>
     </group>
 
     <group col="-1" colspan="2" id="checkboxes">

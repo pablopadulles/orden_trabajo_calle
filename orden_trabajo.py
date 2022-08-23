@@ -58,8 +58,8 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
             'orden_trabajo', 'party', 'Tecnicos',
             domain=[('perfil', '=', 'tec')])
     
-    products = fields.Function(fields.Many2Many('product.product', None, None, 'Productos',
-                states={'invisible':True}), 'on_change_with_products')
+    # products = fields.Function(fields.Many2Many('product.product', None, None, 'Productos',
+    #             states={'invisible':True}), 'on_change_with_products')
     materiales = fields.One2Many('orden.trabajo.materiales', 'name', 'Materiales',
         states={'readonly': Eval('state').in_(['done'])})
     workers = fields.One2Many('orden.trabajo.workers', 'name', 'Trabajadores',
@@ -236,20 +236,19 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     @ModelView.button
     @Workflow.transition('done')
     def done(cls, ots):
-        
         for ot in ots:
             ot.datetime_finish = datetime.now()
             Materiales = Pool().get('oci.materiales')
             Materiales.done(ot.materiales)
             ot.save()
 
-    @fields.depends('tecnico_sup')
-    def on_change_with_products(self, name=None):
-        Product = Pool().get('product.product')
-        materiales = []
-        if not self.tecnico_sup:
-            return []
-        return self.get_materiales(self.tecnico_sup)
+    # @fields.depends('tecnico_sup')
+    # def on_change_with_products(self, name=None):
+    #     Product = Pool().get('product.product')
+    #     materiales = []
+    #     if not self.tecnico_sup:
+    #         return []
+    #     return self.get_materiales(self.tecnico_sup)
         # if self.tecnico.deposito:
         #     stock = Product.products_by_location([self.tecnico.deposito.id])
         #     for k in stock.keys():
@@ -257,17 +256,24 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
         #             materiales.append(k[1])
         # return materiales
 
-    @classmethod
-    def get_materiales(cls, tecnico_id):
-        Product = Pool().get('product.product')
-        Party = Pool().get('party.party')
+    # @classmethod
+    # def get_materiales(cls, tecnico_id):
+    #     Product = Pool().get('product.product')
+    #     Party = Pool().get('party.party')
+    #     materiales = []
+    #     tecnico = Party(tecnico_id)
+    #     if tecnico.deposito:
+    #         stock = Product.products_by_location([tecnico.deposito.id])
+    #         for k in stock.keys():
+    #             if stock.get(k) > 0:
+    #                 materiales.append(k[1])
+    #     return materiales
+
+    def get_materiales(self):
         materiales = []
-        tecnico = Party(tecnico_id)
-        if tecnico.deposito:
-            stock = Product.products_by_location([tecnico.deposito.id])
-            for k in stock.keys():
-                if stock.get(k) > 0:
-                    materiales.append(k[1])
+        for material in self.materiales:
+            if material.diferencia > 0:
+                materiales.append(material)
         return materiales
 
     @classmethod

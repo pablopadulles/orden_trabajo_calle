@@ -39,7 +39,7 @@ class OrdenTrabajo(Workflow, ModelView, ModelSQL):
     street = fields.Char("Street")
     # aviso_señalamiento = fields.Boolean("Aviso de Señalamiento")
     aviso_señalamiento = fields.Integer("AS", states={'required':Equal(Eval('type'), 'siniestro')})
-    numero_ot = fields.Integer("OT", states={'required':Equal(Eval('type'), 'postacion')})
+    numero_ot = fields.Char("OT", states={'required':Equal(Eval('type'), 'postacion')})
     active = fields.Boolean("Activo")
     city = fields.Char("City")
     central = fields.Many2One('oci.central.telecom', 'Zona',
